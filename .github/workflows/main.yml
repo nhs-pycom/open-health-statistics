@@ -2,7 +2,7 @@ name: GitHub Action Workflow
 
 on:
   schedule:
-    - cron: "0 0 * * *" #runs at 00:00 UTC everyday
+    - cron: "0 0 * * 0" #runs at 00:00 UTC every Sunday
 
 jobs:
   manual_deploy:
