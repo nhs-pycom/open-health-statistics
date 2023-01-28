@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opensource-health-statistics"
+version = "0.2.0"
+authors = [
+  { name="Craig R Shenton", email="craig.shenton@nhs.net" },
+]
+description = "opensource-health-statistics: Statistics on open-source healthcare repositories"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/nhs-pycom/opensource-health-statistics"
+"Bug Tracker" = "https://github.com/nhs-pycom/opensource-health-statistics/issues"
