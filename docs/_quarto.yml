@@ -26,15 +26,9 @@ website:
     title: false
     collapse-below: lg
     left:
-      - text: "Open-source Health Statistics"
-        icon: "box-seam"
+      - text: "Opensource-health-stats v0.2.0"
+        icon: "bar-chart"
         href: index.qmd
-      - text: "Organisations"
-        icon: "bookmark-check"
-        href: tutorials/index.qmd
-      - text: "About"
-        icon: "info-circle"
-        href: about.qmd
     right:
       - text: "Help"
         menu:
@@ -57,8 +51,7 @@ website:
     contents:
       - text: "Homepage" 
         file: index.qmd
-      - section: Organisations
-        file: orgs/index.qmd
+      - section: Statistics
         contents: 
           - auto: orgs/*.qmd
       - text: "About"

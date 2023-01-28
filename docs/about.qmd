@@ -1,5 +1,5 @@
 ---
-title: "About `{opensource-health-statistics}`"
+title: "About {opensource-health-statistics}"
 comments: false
 ---
 

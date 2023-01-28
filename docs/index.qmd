@@ -1,101 +1,24 @@
 ---
-pagetitle: "nhspy-plotthedots"
-css: index.css
-editor: source
-description: | 
-  Calculate control limits and draw statistical process control (SPC) charts in python.
+title: "Open-source Healthcare Statistics"
+description: "Collecting statistics on the use of open-source code in the NHS and the wider healthcare field."
 comments: false
 ---
 
-```{python}
-#| echo: false
-#| output: false
-# Install libs from test PIPY
-%pip install --index-url https://test.pypi.org/simple/ --no-deps nhspy-plotthedots-test
+## What is Open-source?
 
-# Import libs
-import pandas as pd
-from datetime import datetime
-import plotly.io as pio
-pio.renderers.default = "plotly_mimetype+notebook"
-```
+Open-source is the practice of publishing the source code of a software project so that anyone can read, modify, re-use, and improve that software.
 
-```{python}
-#| echo: false
-#| output: false
-# File path of the CSV file
-url = 'https://raw.githubusercontent.com/nhs-pycom/nhspy-plotthedots/main/nhspy_plotthedots/data/ae_attendances.csv'
-
-# Read the CSV file and store it in a DataFrame
-df = pd.read_csv(url)
-
-# Convert 'period' column to datetime format
-df['period'] = pd.to_datetime(df['period'])
-
-# Create a subset of the DataFrame based on certain conditions
-sub_set = df[(df['org_code'] == "RQM") & (df['type'] == "1") & (df['period'] < datetime(2018, 4, 1))]
-sub_set = sub_set.sort_values(by='period').reset_index(drop=True)
-```
-
-```{python}
-#| echo: false
-#| output: false
-from nhspy_plotthedots import pandas_spc_calculations
-
-# calculate control limits
-spc = pandas_spc_calculations.pandas_spc_x_calc(sub_set, 'breaches')
-```
-
-:::: {.hero-banner}
-
-::: {.hero-image .hero-image-left}
-:::
-
-::: {.content-block}
-
-# nhspy-plotthedots <span>v0.1.6 (alpha)</span>
-
-### Calculate control limits and draw Statistical Process Control charts in python.
-
-::: {.hero-buttons}
-[Quick Start](tutorials/index.qmd){.btn-action-primary .btn-action .btn .btn-success .btn-lg role="button"}
-<!-- [Read the docs](documentation/index.qmd){.btn-action-primary .btn-action .btn .btn-success .btn-lg role="button"}
-[Latest](updates.qmd){.btn-action-primary .btn-action .btn .btn-success .btn-lg role="button"} -->
-::: 
-
-:::
-
-::: {.hero-image .hero-image-right}
-:::
-
-::::
-</br>
-Welcome to the NHS Python Community’s python version of the NHS-Rplotthedots package. 
-
-The [NHSR Plot the Dots](https://github.com/nhs-r-community/NHSRplotthedots) package was built by the [NHS-R community](https://nhsrcommunity.com) to provide tools for drawing statistical process control (SPC) charts. The package supports the NHS England programme ['Making Data Count'](https://www.england.nhs.uk/publication/making-data-count/). The programme encourages boards, managers, and analyst teams to present data in ways that show change over time, and drive better understanding of indicators than 'RAG' (red, amber, green) rated reports often present.
+As set out in the [NHS Digital Service Manual](https://service-manual.nhs.uk/service-standard/12-make-new-source-code-open), public services are built with public money--so unless there's a good reason not to (for security reasons for example), all code produced by the NHS should be made publicly available. To this end, the [Department of Health & Social Care has recently made a commitment](https://www.gov.uk/government/publications/data-saves-lives-reshaping-health-and-social-care-with-data-draft/data-saves-lives-reshaping-health-and-social-care-with-data-draft) to make all new NHS code open source and published under appropriate licences such as [MIT](https://opensource.org/licenses/MIT) and [OGLv3](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/).
 
 ::: {.callout-note}
 ## Note
 Please be aware that this package is in the early stages of development, and features may change.
 :::
 
-## Statistical Process Control
-
-Statistical process control (SPC) is an analytical technique that plots data over time. It helps us understand variation and in so doing guides us to take the most appropriate action.
-
-SPC is a good technique to use when implementing change as it enables you to understand whether changes you are making are resulting in improvement — a key component of the Model for Improvement widely used within the NHS.
-
 ::: {.panel-tabset}
 ## Example `nhspy-plotthedots` Chart
-```{python}
-#| echo: false
-from nhspy_plotthedots import plotly_spc_chart
-
-# plot SPC chart
-plotly_spc_chart.plotly_spc_chart(spc, 'breaches', 'period', plot_title = 'Chelsea & Westminster Hospital NHS FT', x_lab = 'Month of attendance', y_lab = 'Number of 4-Hour Target Breaches')
-```
 :::
 
-## NHS-R slack
+## NHS Python Community slack
 
-If you want to learn more about this project, please join the discussion at the [NHS-R Community Slack group](https://nhsrcommunity.slack.com/) and the specific channel [#proj-nhsr-plot-the-dots](https://nhsrcommunity.slack.com/archives/CSVD4SYF3).
+If you want to learn more about this project, please join the discussion at the [NHS Python Community Slack group](https://).

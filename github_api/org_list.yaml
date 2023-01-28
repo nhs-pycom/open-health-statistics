@@ -20,5 +20,10 @@ github_org_dict:
     "BHF Data Science Centre": "BHFDSC",
     "NHS Leadership Academy": "NHSLeadership",
     "NICE Digital": "nice-digital",
-    "NHS Business Services Authority": "nhsbsa"
+    "NHS Business Services Authority": "nhsbsa",
+    "": "MHRA",
+    "": "NHS-Blood-and-Transplant",
+    "": "CQCDigital",
+    "": "Health-Education-England",
   }
+
