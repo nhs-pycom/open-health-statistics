@@ -15,6 +15,21 @@ As set out in the [NHS Digital Service Manual](https://service-manual.nhs.uk/ser
 Please be aware that this package is in the early stages of development, and features may change.
 :::
 
+```{python}
+import pandas as pd
+df = pd.read_csv("../data/org_repos_agg.csv")
+
+# Format the latest output table
+df = (df.groupby("Organisation")
+     .tail(1)
+     .sort_values("Open Repositories", ascending=False)
+     .drop(columns=["Date"])
+)
+
+# Generate the markdown table
+df.to_markdown(index=False)
+```
+
 ::: {.panel-tabset}
 ## Example `nhspy-plotthedots` Chart
 :::
