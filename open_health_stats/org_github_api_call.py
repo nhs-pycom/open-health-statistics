@@ -8,7 +8,7 @@ with open("open_health_stats/org_list.yaml", "r") as f:
     config = yaml.load(f, Loader=yaml.FullLoader)
 
 # Pull the raw data from the APIs
-access_token = "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"
+access_token = "token"
 raw_github_df = github_api_call.pull_raw_df(config["github_org_dict"])
 
 # save file to .csvç
