@@ -2,6 +2,7 @@
 title: "Open-source Healthcare Statistics"
 description: "Collecting statistics on the use of open-source code in the NHS and the wider healthcare field."
 comments: false
+jupyter: python3
 ---
 
 ## What is Open-source?
@@ -17,17 +18,29 @@ Please be aware that this package is in the early stages of development, and fea
 
 ```{python}
 import pandas as pd
-df = pd.read_csv("../data/org_repos_agg.csv")
+import plotly.graph_objects as go
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
-# Format the latest output table
-df = (df.groupby("Organisation")
-     .tail(1)
-     .sort_values("Open Repositories", ascending=False)
-     .drop(columns=["Date"])
-)
+df = pd.read_csv("../open_health_stats/data/org_repos_agg.csv")
 
-# Generate the markdown table
-df.to_markdown(index=False)
+# Convert the "Date" column to a datetime dtype
+df['Date'] = pd.to_datetime(df['Date'])
+
+# Filter the latest date for each organization
+latest_dates = df.groupby('Organisation')['Date'].idxmax()
+latest_df = df.loc[latest_dates]
+
+# Create a new column with hyperlinks for the "Organisation" column
+latest_df['Organisation'] = latest_df.apply(lambda x: f"[{x['Organisation']}]({x['URL']})", axis=1)
+
+# Drop the "Date" column and sort by "Open Repositories"
+latest_df = latest_df.drop(['Date', 'URL'], axis=1).sort_values('Open Repositories', ascending=False)
+
+# Convert the sorted DataFrame to a markdown table and print it
+md_table = latest_df.to_markdown(index=False)
+
+print(md_table)
 ```
 
 ::: {.panel-tabset}
