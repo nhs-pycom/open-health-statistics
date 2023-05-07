@@ -12,4 +12,4 @@ access_token = "token"
 raw_github_df = github_api_call.pull_raw_df(config["github_org_dict"])
 
 # save file to .csvç
-raw_github_df.to_csv("data/org_repos_raw.csv", index=False)
+raw_github_df.to_csv("open_health_stats/data/org_repos_raw.csv", index=False)
