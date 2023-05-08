@@ -1,14 +1,17 @@
 ---
-title: "About {opensource-health-statistics}"
+title: "About"
 comments: false
 ---
 
+We have been collecting statistics on open-source repositories of NHS and related healthcare organisations. We use the open [GitHub API](https://docs.github.com/en/rest/reference/orgs) to pull data from open (public) repositoiries as `.json` files, then flatten the data into `pandas` dataframes for analysis. This has produced an interesting dataset that has lots of potential for further analysis and visualisations. 
+
 ## Authors
 
-- [Craig Robert Shenton, PhD](https://github.com/craig-shenton) `author`, `maintainer`.
-- [Mary Amanuel](https://github.com/) `author`.
-- [Aruba Zubair](https://github.com/) `author`.
-- [Adam Iverson](https://github.com/) `author`.
+- [Craig Robert Shenton, PhD](https://github.com/craig-shenton), NHSE `author`, `maintainer`.
+- [Mary Amanuel](https://github.com/maryamanuel1), NHSE `author`.
+- [Arouba Zubair](https://github.com/Arouba), NHSX `author`.
+- [Mattia Ficarelli, PhD](https://github.com/mattia-ficarelli), NHSX `author`.
+- [Adam Ivison ](https://github.com/admivsn), NHSBSA `contributor`.
 
 ## Licence
 

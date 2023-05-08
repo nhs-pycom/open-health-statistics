@@ -38,6 +38,9 @@ website:
           - text: "Ask a Question"
             icon: "chat-right-text"
             href: "https://github.com/nhs-pycom/opensource-health-statistics/discussions"
+          - text: "About"
+            icon: "info-circle"
+            file: about.qmd
       - icon: github
         href: https://github.com/nhs-pycom/
         aria-label: GitHub
@@ -51,9 +54,6 @@ website:
     contents:
       - text: "Homepage" 
         file: index.qmd
-      - section: Statistics
-        contents: 
-          - auto: orgs/*.qmd
       - text: "About"
         file: about.qmd
   comments:
@@ -65,8 +65,6 @@ format:
     toc-depth: 1
     theme:
       light: [cosmo, _assets/style/theme.scss]
-    code-copy: true
-    code-overflow: wrap
     css: _assets/style/styles.css
     include-after-body: _assets/style/js.html
     # grid:
@@ -78,12 +76,10 @@ format:
     #   source: false
     #   toggle: false
     #   caption: none
-    # code-fold: true
-    # code-summary: "Show code"
-    # code-copy: true
-    # code-overflow: wrap
-#      - icon: box-seam
-#        href: https://cloud.r-project.org/web/packages/
+    code-fold: true
+    code-summary: "Show code"
+    code-copy: true
+    code-overflow: wrap
 
 execute:
   freeze: auto
