@@ -2,7 +2,6 @@
 title: "Open-source Healthcare Statistics"
 description: "Collecting statistics on the use of open-source code in the NHS and the wider healthcare field."
 comments: false
-jupyter: python3
 ---
 
 ## What is Open-source?
@@ -17,10 +16,16 @@ Please be aware that this package is in the early stages of development, and fea
 :::
 
 ```{python}
+#| label: tbl-open-repos
+#| tbl-cap: "Open Repositories"
+#| tbl-colwidths: [20,30,25,25]
+
 import pandas as pd
 import plotly.graph_objects as go
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from IPython.display import Markdown
+from tabulate import tabulate
 
 df = pd.read_csv("../open_health_stats/data/org_repos_agg.csv")
 
@@ -40,7 +45,7 @@ latest_df = latest_df.drop(['Date', 'URL'], axis=1).sort_values('Open Repositori
 # Convert the sorted DataFrame to a markdown table and print it
 md_table = latest_df.to_markdown(index=False)
 
-print(md_table)
+Markdown(tabulate(latest_df, headers='keys', tablefmt='pipe', showindex=False))
 ```
 
 ::: {.panel-tabset}

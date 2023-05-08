@@ -26,7 +26,7 @@ website:
     title: false
     collapse-below: lg
     left:
-      - text: "Opensource-health-stats v0.2.0"
+      - text: "opensource-health-stats v0.2.0"
         icon: "bar-chart"
         href: index.qmd
     right:
