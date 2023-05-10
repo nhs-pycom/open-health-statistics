@@ -1,3 +1,5 @@
+name: Qarto publish
+
 on:
   push:
     branches: main
@@ -7,8 +9,6 @@ on:
     paths: 'docs/**'
   schedule:
     - cron: "0 0 * * 0" #runs at 00:00 UTC every Sunday
-
-name: Render and Publish
 
 jobs:
   build-deploy:
