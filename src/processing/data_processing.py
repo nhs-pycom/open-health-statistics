@@ -1,9 +1,13 @@
-from datetime import date
+"""
+Purpose of script: contains cleaning and formatting tailored to our publication
+"""
 from datetime import datetime
 import pandas as pd
-import numpy as np
+import logging
 
-def tidy_raw_df(df):
+logger = logging.getLogger(__name__)
+
+def tidy_raw_df(df: pd.DataFrame) -> pd.DataFrame:
     """
     Tidies the raw DataFrame by filtering out irrelevant columns, replacing synonym languages,
     adding a column of 1s to sum for open_repos, and renaming columns.
@@ -14,6 +18,7 @@ def tidy_raw_df(df):
     Returns:
     pandas.DataFrame: The tidied DataFrame.
     """
+    logger.info("Applying tidy raw data transformation.")
     # Drop columns that are not needed
     columns_to_drop = ['node_id', 'url', 'forks_url', 'keys_url', 'collaborators_url', 'teams_url',
                        'hooks_url', 'issue_events_url', 'events_url', 'assignees_url', 'branches_url',
@@ -43,20 +48,21 @@ def tidy_raw_df(df):
 
     return filtered_df
 
-def aggregate_org_raw(df):
-    """Aggregate the raw data by organization and date.
+def aggregate_org_raw(df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate the raw data by organisation and date.
 
     Args:
         df (pandas.DataFrame): The raw data containing the repositories information.
 
     Returns:
-        pandas.DataFrame: The aggregated data by organization and date, containing the cumulative sum of open
+        pandas.DataFrame: The aggregated data by organisation and date, containing the cumulative sum of open
         repositories per day.
     """
+    logger.info("Applying the aggregate the raw data by organisation and date transformation.")
     # Convert created_at column to date type (day only)
     df['created_at'] = pd.to_datetime(df['created_at']).apply(lambda x: x.strftime("%Y-%m-%d"))
 
-    # Group by organization and created_at columns, and calculate the cumulative sum of the numerical columns
+    # Group by organisation and created_at columns, and calculate the cumulative sum of the numerical columns
     # (open_repo_count and size)
     aggregate_df = (df.groupby(['owner_login', 'created_at'])
                     .agg({'open_repo_count': 'sum', 'size': 'sum'})
@@ -67,17 +73,18 @@ def aggregate_org_raw(df):
     # Return the relevant columns (owner_login, created_at, and open_repo_count)
     return aggregate_df[['owner_login', 'created_at', 'open_repo_count']]
 
-def create_top_column_df(df, column):
-    """Create a dataframe showing the top value of a given column for each organization and date.
+def create_top_column_df(df: pd.DataFrame, column: str) -> pd.DataFrame:
+    """Create a dataframe showing the top value of a given column for each organisation and date.
 
     Args:
         df (pandas.DataFrame): The input dataframe.
         column (str): The column to get the top value from.
 
     Returns:
-        pandas.DataFrame: A dataframe containing the top value of the given column for each organization and date.
+        pandas.DataFrame: A dataframe containing the top value of the given column for each organisation and date.
     """
-    # Group by organization, created_at, and column, and get the count of each column value at each date
+    logger.info("Applying the find top value of a given column transformation.")
+    # Group by organisation, created_at, and column, and get the count of each column value at each date
     df = df.groupby(['owner_login', 'created_at', column]).size()
 
     # Convert to a cumulative count of the column values and reset the index for the column of interest
@@ -94,7 +101,7 @@ def create_top_column_df(df, column):
     # Convert back to long format and remove NaNs
     df = df.reset_index().melt(id_vars=['owner_login', 'created_at'], var_name=column, value_name='count').dropna()
 
-    # Keep the row with the largest count for each organization and date
+    # Keep the row with the largest count for each organisation and date
     df = (df.sort_values(by=['owner_login', 'created_at', 'count'])
           .drop_duplicates(subset=['owner_login', 'created_at'], keep='last'))
 
@@ -103,19 +110,20 @@ def create_top_column_df(df, column):
 
     return df
 
-def aggregate_github_data(aggregate_df, top_license_df, top_language_df):
-    """Aggregate the Github data by organization and date, and merge it with the top license and top language data.
+def aggregate_github_data(aggregate_df: pd.DataFrame, top_license_df: pd.DataFrame, top_language_df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate the Github data by organisation and date, and merge it with the top license and top language data.
 
     Args:
-        aggregate_df (pandas.DataFrame): The aggregated data by organization and date, containing the cumulative sum of
+        aggregate_df (pandas.DataFrame): The aggregated data by organisation and date, containing the cumulative sum of
         open repositories per day.
-        top_license_df (pandas.DataFrame): The top license data per organization and date.
-        top_language_df (pandas.DataFrame): The top language data per organization and date.
+        top_license_df (pandas.DataFrame): The top license data per organisation and date.
+        top_language_df (pandas.DataFrame): The top language data per organisation and date.
 
     Returns:
         pandas.DataFrame: The aggregated data merged with the top license and top language data, containing the cumulative
-        sum of open repositories per day, the top license, and the top language for each organization and date.
+        sum of open repositories per day, the top license, and the top language for each organisation and date.
     """
+    logger.info("Applying the aggregate data by organisation transformation.")
     # Merge the aggregated data with the top license and top language data, forward-filling missing values
     aggregate_df = (aggregate_df.merge(top_license_df, how='left')
                     .merge(top_language_df, how='left')
@@ -131,7 +139,7 @@ def aggregate_github_data(aggregate_df, top_license_df, top_language_df):
 
     return aggregate_df
 
-def fill_missing_values(df):
+def fill_missing_values(df: pd.DataFrame) -> pd.DataFrame:
     """
     Fill missing values in the DataFrame and add a new row for today's date if it does not exist.
     
@@ -140,11 +148,12 @@ def fill_missing_values(df):
     :return: DataFrame with missing values filled and today's row added if necessary
     :rtype: pandas.DataFrame
     """
-    def process_organization(org_df):
+    logger.info("Applying the fill missing values transformation.")
+    def process_organisation(org_df: pd.DataFrame) -> pd.DataFrame:
         """
-        Process a single organization's DataFrame, filling missing values and adding today's row if necessary.
+        Process a single organisation's DataFrame, filling missing values and adding today's row if necessary.
         
-        :param org_df: DataFrame containing a single organization's data
+        :param org_df: DataFrame containing a single organisation's data
         :type org_df: pandas.DataFrame
         :return: DataFrame with missing values filled and today's row added if necessary
         :rtype: pandas.DataFrame
@@ -156,11 +165,11 @@ def fill_missing_values(df):
         org_df['Date'] = pd.to_datetime(org_df['Date'])
         return org_df
     
-    def add_today_if_missing(org_df):
+    def add_today_if_missing(org_df: pd.DataFrame) -> pd.DataFrame:
         """
         Add a new row for today's date if it does not exist in the DataFrame.
         
-        :param org_df: DataFrame containing a single organization's data
+        :param org_df: DataFrame containing a single organisation's data
         :type org_df: pandas.DataFrame
         :return: DataFrame with today's row added if necessary
         :rtype: pandas.DataFrame
@@ -175,7 +184,7 @@ def fill_missing_values(df):
             
         return org_df
 
-    def create_new_row(last_row, today):
+    def create_new_row(last_row: pd.Series, today: str) -> dict:
         """
         Create a new row for today's date with the same values as the last row.
         
@@ -193,7 +202,7 @@ def fill_missing_values(df):
         return new_row
 
     orgs = set(df['Organisation'])
-    processed_orgs = [process_organization(df[df['Organisation'] == org]) for org in orgs]
+    processed_orgs = [process_organisation(df[df['Organisation'] == org]) for org in orgs]
     result = pd.concat(processed_orgs, ignore_index=True)
     
     return result
