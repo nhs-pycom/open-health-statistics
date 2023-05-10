@@ -1,5 +1,20 @@
 """
-Purpose of script: contains cleaning and formatting tailored to our publication
+Python notebook source
+-------------------------------------------------------------------------
+Copyright (c) 2023 NHS Python Community. All rights reserved.
+Licensed under the MIT License. See license.txt in the project root for
+license information.
+-------------------------------------------------------------------------
+
+FILE:           data_processing.py
+DESCRIPTION:    Contains cleaning and formatting tailored to our publication
+
+CONTRIBUTORS:   Craig R. Shenton
+CONTACT:        craig.shenton@nhs.net
+CREATED:        10 May 2023
+VERSION:        0.2.0
+
+-------------------------------------------------------------------------
 """
 from datetime import datetime
 import pandas as pd
@@ -28,7 +43,7 @@ def tidy_raw_df(df: pd.DataFrame) -> pd.DataFrame:
                        'contents_url', 'compare_url', 'merges_url', 'archive_url', 'downloads_url', 'issues_url',
                        'pulls_url', 'milestones_url', 'notifications_url', 'labels_url', 'releases_url',
                        'deployments_url', 'git_url', 'ssh_url', 'clone_url', 'svn_url',
-                       'mirror_url', 'permissions']
+                       'mirror_url']
 
     existing_columns = set(df.columns)
     columns_to_drop = list(filter(lambda col: col in existing_columns, columns_to_drop))
@@ -207,3 +222,33 @@ def fill_missing_values(df: pd.DataFrame) -> pd.DataFrame:
     
     return result
 
+def get_top_license_and_language(tidy_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Get a DataFrame of the top licenses and languages for a given tidy DataFrame of GitHub data.
+    
+    Parameters:
+        tidy_df (pd.DataFrame): A tidy DataFrame of GitHub data.
+        
+    Returns:
+        pd.DataFrame: A DataFrame of the top licenses and languages for the given tidy DataFrame.
+    """
+    top_license_df = create_top_column_df(tidy_df, "license_name")
+    top_language_df = create_top_column_df(tidy_df, "language")
+    return aggregate_github_data(aggregate_org_raw(tidy_df), top_license_df, top_language_df)
+
+def add_missing_values_and_filter(tidy_df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Add missing values and filter the DataFrame to include one row per organization.
+    
+    Parameters:
+        tidy_df (pd.DataFrame): A tidy DataFrame of GitHub data.
+        
+    Returns:
+        pd.DataFrame: A DataFrame of the GitHub data with missing values added and filtered to include one row per organization.
+    """
+    filtered_org_df = tidy_df.groupby("owner_login").first().reset_index()
+    merged_df = get_top_license_and_language(tidy_df).merge(filtered_org_df[["owner_html_url"] + ["owner_login"]], left_on="Organisation", right_on="owner_login")
+    merged_df = merged_df.drop(["owner_login"], axis=1)
+    merged_df = merged_df.rename(columns={'owner_html_url': 'URL'})
+    merged_df = merged_df.reindex(columns=['Organisation', 'Date', 'Open Repositories', 'Top Language', 'Top License', 'URL'])
+    return fill_missing_values(merged_df)

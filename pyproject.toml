@@ -3,13 +3,13 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "rap-package-template"
-version = "1.0.0"
+name = "opensource-health-statistics"
+version = "0.2.0"
 authors = [
-    { name="Data Science Skilled team", email="datascience@nhs.net" }
+    { name="Craig R. Shenton, PhD", email="craig.shenton@nhs.net" }
 ]
 readme = "README.md"
 requires-python = ">=3.10"
 
 [project.urls]
-"Homepage" = "https://nhsdigital.github.io/rap-community-of-practice/"
+"Homepage" = "https://nhs-pycom.github.io/opensource-health-statistics/"
