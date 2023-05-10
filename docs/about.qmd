@@ -5,6 +5,11 @@ comments: false
 
 We have been collecting statistics on open-source repositories of NHS and related healthcare organisations. We use the open [GitHub API](https://docs.github.com/en/rest/reference/orgs) to pull data from open (public) repositoiries as `.json` files, then flatten the data into `pandas` dataframes for analysis. This has produced an interesting dataset that has lots of potential for further analysis and visualisations. 
 
+ ### Made with:
+
+ - [NHSD RAP community python template](https://github.com/NHSDigital/rap-package-template)
+ - [NHS-R Quarto Theme](https://github.com/nhs-r-community/quarto-nhs-theme)
+
 ## Authors
 
 - [Craig Robert Shenton, PhD](https://github.com/craig-shenton), NHSE `author`, `maintainer`.
