@@ -98,7 +98,7 @@ def create_top_column_df(df: pd.DataFrame, column: str) -> pd.DataFrame:
     Returns:
         pandas.DataFrame: A dataframe containing the top value of the given column for each organisation and date.
     """
-    logger.info("Applying the find top value of a given column transformation.")
+    logger.info(f"Applying the find top value of the {column} column transformation.")
     # Group by organisation, created_at, and column, and get the count of each column value at each date
     df = df.groupby(['owner_login', 'created_at', column]).size()
 
@@ -139,10 +139,15 @@ def aggregate_github_data(aggregate_df: pd.DataFrame, top_license_df: pd.DataFra
         sum of open repositories per day, the top license, and the top language for each organisation and date.
     """
     logger.info("Applying the aggregate data by organisation transformation.")
+
+    aggregate_df['created_at'] = pd.to_datetime(aggregate_df['created_at']).dt.tz_localize(None).dt.strftime('%Y-%m-%d')
+    top_language_df['created_at'] = pd.to_datetime(top_language_df['created_at']).dt.tz_localize(None).dt.strftime('%Y-%m-%d')
+    top_license_df['created_at'] = pd.to_datetime(top_license_df['created_at']).dt.tz_localize(None).dt.strftime('%Y-%m-%d')
     # Merge the aggregated data with the top license and top language data, forward-filling missing values
-    aggregate_df = (aggregate_df.merge(top_license_df, how='left')
-                    .merge(top_language_df, how='left')
-                    .apply(lambda df: df.ffill()))
+    merge_cols = ["owner_login", "created_at"]
+    aggregate_df = aggregate_df.merge(top_license_df, how='left', on=merge_cols)
+    aggregate_df = aggregate_df.merge(top_language_df, how='left', on=merge_cols)
+    aggregate_df = aggregate_df.ffill()
 
     # Rename the columns to more readable names
     aggregate_df = aggregate_df.rename(columns={'owner_login': 'Organisation',

@@ -14,8 +14,11 @@ This function pulls raw GitHub repository data for multiple organisations and re
 ```python
 from typing import Dict
 import pandas as pd
+import logging
 
-def query_org_repos(github_org_dict, max_retries=3):
+logger = logging.getLogger(__name__)
+
+def query_org_repos(github_org_dict: dict, max_retries: int = 3) -> pd.DataFrame:
     """
     Pulls raw GitHub repository data for multiple organisations and returns a consolidated DataFrame.
 
@@ -26,7 +29,7 @@ def query_org_repos(github_org_dict, max_retries=3):
             Defaults to 3.
 
     Returns:
-        pd.DataFrame: A Pandas DataFrame containing information about repositories for all specified organizations.
+        pd.DataFrame: A Pandas DataFrame containing information about repositories for all specified organisations.
     """
     df = pd.DataFrame()
 
@@ -37,7 +40,7 @@ def query_org_repos(github_org_dict, max_retries=3):
             try:
                 raw_data = fetch_public_repos(org, page=page)
                 repos_count = len(raw_data)
-                print(f"{org} repo count = {repos_count}")
+                logger.info(f"{org} repo count = {repos_count}")
 
                 if repos_count == 0:
                     break
@@ -53,13 +56,13 @@ def query_org_repos(github_org_dict, max_retries=3):
 
             except requests.exceptions.HTTPError as e:
                 if e.response.status_code == 403:
-                    print(f"Rate limit exceeded for organisation {org}.")
+                    logger.info(f"Rate limit exceeded for organisation {org}.")
                     if retries >= max_retries:
-                        print(f"Max retries exceeded for organisation {org}. Moving on.")
+                        logger.info(f"Max retries exceeded for organisation {org}. Moving on.")
                         break
                     reset_time = int(e.response.headers.get("X-RateLimit-Reset"))
                     wait_time = reset_time - time.time() + 1
-                    print(f"Waiting {wait_time} seconds until rate limit is reset.")
+                    logger.info(f"Waiting {wait_time} seconds until rate limit is reset.")
                     time.sleep(wait_time)
                     retries += 1
                 else:
@@ -71,17 +74,17 @@ def query_org_repos(github_org_dict, max_retries=3):
 
 ## Parameters
 
-- github_org_dict: A dictionary containing GitHub organizations to fetch repositories for. Values should be organisation names and organisation github names.
+- github_org_dict: A dictionary containing GitHub organisations to fetch repositories for. Values should be organisation names and organisation github names.
 - max_retries: The maximum number of times to retry the API request if a rate limit is encountered. Defaults to 3.
 
 ## Returns
 
-- pd.DataFrame: A Pandas DataFrame containing information about repositories for all specified organizations.
+- pd.DataFrame: A Pandas DataFrame containing information about repositories for all specified organisations.
 
 ## Example Usage
 
 ```python
-import utilities.github_api_calls as github_api_call
+from src.ingestion.github_api_call import query_org_repos
 
-df = github_api_call.query_org_repos({'Open AI': 'openai', 'Google': 'google'}, max_retries=3)
+df = query_org_repos({'Open AI': 'openai', 'Google': 'google'}, max_retries=3)
 ```

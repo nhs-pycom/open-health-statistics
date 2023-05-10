@@ -28,7 +28,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 # Load data
-df = pd.read_csv("../open_health_stats/data/org_repos_agg.csv")
+df = pd.read_csv("../data/org_repos_agg.csv")
 
 # Convert the "Date" column to a datetime dtype
 df['Date'] = pd.to_datetime(df['Date'])
@@ -107,7 +107,7 @@ from IPython.display import display, Markdown
 from tabulate import tabulate
 
 # Load data
-df = pd.read_csv("../open_health_stats/data/org_repos_agg.csv")
+df = pd.read_csv("../data/org_repos_agg.csv")
 
 # Convert the "Date" column to a datetime dtype
 df['Date'] = pd.to_datetime(df['Date'])

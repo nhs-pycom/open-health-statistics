@@ -1,3 +1,21 @@
+"""
+Python notebook source
+-------------------------------------------------------------------------
+Copyright (c) 2023 NHS Python Community. All rights reserved.
+Licensed under the MIT License. See license.txt in the project root for
+license information.
+-------------------------------------------------------------------------
+
+FILE:           github_api_call.py
+DESCRIPTION:    Query GitHub API
+
+CONTRIBUTORS:   Craig R. Shenton
+CONTACT:        craig.shenton@nhs.net
+CREATED:        10 May 2023
+VERSION:        0.2.0
+
+-------------------------------------------------------------------------
+"""
 import requests
 import time
 import pandas as pd
