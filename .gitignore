@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 .vscode
 .DS_store
+*.llm
 # C extensions
 *.so
 
@@ -125,3 +126,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.Rproj.user
