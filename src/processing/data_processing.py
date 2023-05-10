@@ -216,7 +216,7 @@ def fill_missing_values(df: pd.DataFrame) -> pd.DataFrame:
         :rtype: dict
         """
         new_row = {'Organisation': last_row['Organisation'], 'Date': today}
-        for col in ['Open Repositories', 'Top License', 'Top Language']:
+        for col in ['Open Repositories', 'Top License', 'Top Language', 'URL']:
             new_val = last_row[col]
             new_row[col] = '' if pd.isna(new_val) else new_val
         return new_row

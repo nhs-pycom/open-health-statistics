@@ -17,7 +17,7 @@ To this end, the [Department of Health & Social Care has recently made a commitm
 
 ## The growth of open-source in healthcare
 
-The ‘cambrian explosion’ visualisation captures the rise in open-source software in recent years. From the first open-source repository published by NHS England in 2014, to over 1,200 today. Python, R, and webdev tools (HTML, css, Ruby, PHP) are the most popular languages.
+The ‘cambrian explosion’ visualisation captures the rise in open-source software in recent years. From the first open-source repository published by NHS England in 2014, to over 1,200 today. Python, R, and webdev tools (HTML, css, Ruby, PHP) are the most popular languages. 
 
 ```{python}
 import pandas as pd
