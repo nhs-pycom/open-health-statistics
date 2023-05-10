@@ -51,8 +51,8 @@ _**Note:** No private data are shared in this repository._
 | ---- | ---- | ----------- |
 | .github/workflows | [[Link](/.github/workflows)]  | Github Action workflow files that automate the publishing process |
 | docs/ | [[Link](docs/)]  | Files for rendering the Quarto website |
-| data | [[Link](data/)]  | Open-source statistics datasets from the GitHub API |
-| tests | [[Link](tests/)]  | Unit testing framework |
+| data/ | [[Link](data/)]  | Open-source statistics datasets from the GitHub API |
+| tests/ | [[Link](tests/)]  | Unit testing framework |
 
 ### Built With
 

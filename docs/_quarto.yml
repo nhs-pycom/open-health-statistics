@@ -54,6 +54,9 @@ website:
     contents:
       - text: "Homepage" 
         file: index.qmd
+      - section: Documentation
+        contents: 
+          - auto: pages/*.qmd
       - text: "About"
         file: about.qmd
   comments:

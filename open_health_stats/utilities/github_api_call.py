@@ -43,7 +43,7 @@ def parse_github_repos(raw_data):
     data = [repo for repo in data if not repo["fork"]]
     return pd.json_normalize(data)
 
-def pull_raw_df(github_org_dict, max_retries=3):
+def query_org_repos(github_org_dict, max_retries=3):
     """
     Pulls raw GitHub repository data for multiple organizations and returns a consolidated DataFrame.
 
