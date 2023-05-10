@@ -7,7 +7,7 @@ comments: false
 
 ## Description
 
-This function pulls raw GitHub repository data for multiple organisations and returns a consolidated DataFrame.
+This function pulls raw GitHub repository data for multiple organisations and returns a consolidated DataFrame. 
 
 ## Signature
 
