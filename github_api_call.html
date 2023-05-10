@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>opensource-health-statistics - About</title>
+<title>opensource-health-statistics - GitHub API call</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -92,7 +92,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./pages/github_api_call.html" rel="prev">
 <link href="./_assets/favicon.ico" rel="icon">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -125,8 +124,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <link rel="stylesheet" href="_assets/style/styles.css">
-<meta property="og:title" content="opensource-health-statistics - About">
-<meta property="og:description" content="We have been collecting statistics on open-source repositories of NHS and related healthcare organisations. We use the open GitHub API to pull data from open (public) repositoiries as .">
+<meta property="og:title" content="opensource-health-statistics - GitHub API call">
 <meta property="og:site-name" content="opensource-health-statistics">
 </head>
 
@@ -187,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">About</h1>
+      <h1 class="quarto-secondary-nav-title">GitHub API call</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -205,24 +203,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="./index.html" class="sidebar-item-text sidebar-link">Homepage</a>
   </div>
 </li>
-        <li class="sidebar-item sidebar-item-section">
-      <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Documentation</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
-            <i class="bi bi-chevron-right ms-2"></i>
-          </a> 
-      </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pages/github_api_call.html" class="sidebar-item-text sidebar-link">GitHub API call</a>
-  </div>
-</li>
-      </ul>
-  </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./about.html" class="sidebar-item-text sidebar-link active">About</a>
+  <a href="./about.html" class="sidebar-item-text sidebar-link">About</a>
   </div>
 </li>
     </ul>
@@ -230,14 +213,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#pull_raw_save_df-function" id="toc-pull_raw_save_df-function" class="nav-link active" data-scroll-target="#pull_raw_save_df-function"><code>pull_raw_save_df</code> function</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/nhs-pycom/opensource-health-statistics/edit/main/github_api_call.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/nhs-pycom/opensource-health-statistics/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">About</h1>
+<h1 class="title d-none d-lg-block">GitHub API call</h1>
 </div>
 
 
@@ -252,32 +241,101 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>We have been collecting statistics on open-source repositories of NHS and related healthcare organisations. We use the open <a href="https://docs.github.com/en/rest/reference/orgs">GitHub API</a> to pull data from open (public) repositoiries as <code>.json</code> files, then flatten the data into <code>pandas</code> dataframes for analysis. This has produced an interesting dataset that has lots of potential for further analysis and visualisations.</p>
-<section id="authors" class="level2">
-<h2 class="anchored" data-anchor-id="authors">Authors</h2>
+<section id="pull_raw_save_df-function" class="level1">
+<h1><code>pull_raw_save_df</code> function</h1>
+<section id="description" class="level2">
+<h2 class="anchored" data-anchor-id="description">Description</h2>
+<p>This function pulls raw GitHub repository data for multiple organisations and returns a consolidated DataFrame.</p>
+</section>
+<section id="signature" class="level2">
+<h2 class="anchored" data-anchor-id="signature">Signature</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Dict</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pull_raw_save_df(github_org_dict: Dict[<span class="bu">str</span>, <span class="bu">str</span>], csv_path: <span class="bu">str</span>, max_retries: <span class="bu">int</span> <span class="op">=</span> <span class="dv">3</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Pulls raw GitHub repository data for multiple organisations and returns a consolidated DataFrame.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">        github_org_dict (dict): A dictionary containing GitHub organisations to fetch repositories for.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">            Values should be organisation names.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">        csv_path (str): The path to the CSV file containing previously fetched data.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">        max_retries (int, optional): The maximum number of times to retry the API request if a rate limit is encountered.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">            Defaults to 3.</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">        pd.DataFrame: A Pandas DataFrame containing information about repositories for all specified organisations.</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(csv_path):</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pd.read_csv(csv_path)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        fetched_repos <span class="op">=</span> <span class="bu">set</span>(df[<span class="st">'id'</span>])</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        df <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        fetched_repos <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> org <span class="kw">in</span> github_org_dict.values():</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        page <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        retries <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span>:</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                raw_data <span class="op">=</span> fetch_public_repos(org, page<span class="op">=</span>page)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                repos_count <span class="op">=</span> <span class="bu">len</span>(raw_data)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>                logging.info(<span class="ss">f"</span><span class="sc">{</span>org<span class="sc">}</span><span class="ss"> repo count = </span><span class="sc">{</span>repos_count<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> repos_count <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">break</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>                parsed_data <span class="op">=</span> parse_github_repos(raw_data)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>                new_data <span class="op">=</span> parsed_data[<span class="op">~</span>parsed_data[<span class="st">'id'</span>].isin(fetched_repos)]</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>                df <span class="op">=</span> pd.concat([df, new_data], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>                fetched_repos.update(new_data[<span class="st">'id'</span>].values)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> repos_count <span class="op">&lt;</span> <span class="dv">100</span>:</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">break</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span>:</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>                    page <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>            <span class="cf">except</span> requests.exceptions.HTTPError <span class="im">as</span> e:</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> e.response.status_code <span class="op">==</span> <span class="dv">403</span>:</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>                    logging.warning(<span class="ss">f"Rate limit exceeded for organization </span><span class="sc">{</span>org<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> retries <span class="op">&gt;=</span> max_retries:</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>                        logging.warning(<span class="ss">f"Max retries exceeded for organization </span><span class="sc">{</span>org<span class="sc">}</span><span class="ss">. Moving on."</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">break</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>                    reset_time <span class="op">=</span> <span class="bu">int</span>(e.response.headers.get(<span class="st">"X-RateLimit-Reset"</span>))</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>                    wait_time <span class="op">=</span> reset_time <span class="op">-</span> time.time() <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>                    logging.info(<span class="ss">f"Waiting </span><span class="sc">{</span>wait_time<span class="sc">}</span><span class="ss"> seconds until rate limit is reset."</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>                    time.sleep(wait_time)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>                    retries <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>                <span class="cf">else</span>:</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>                    logging.error(<span class="ss">f"Error fetching data for </span><span class="sc">{</span>org<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">break</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    df.drop_duplicates(subset<span class="op">=</span><span class="st">'id'</span>, keep<span class="op">=</span><span class="st">'first'</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>    df.to_csv(csv_path, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="parameters" class="level2">
+<h2 class="anchored" data-anchor-id="parameters">Parameters</h2>
 <ul>
-<li><a href="https://github.com/craig-shenton">Craig Robert Shenton, PhD</a>, NHSE <code>author</code>, <code>maintainer</code>.</li>
-<li><a href="https://github.com/maryamanuel1">Mary Amanuel</a>, NHSE <code>author</code>.</li>
-<li><a href="https://github.com/Arouba">Arouba Zubair</a>, NHSX <code>author</code>.</li>
-<li><a href="https://github.com/mattia-ficarelli">Mattia Ficarelli, PhD</a>, NHSX <code>author</code>.</li>
-<li><a href="https://github.com/admivsn">Adam Ivison</a>, NHSBSA <code>contributor</code>.</li>
+<li>github_org_dict: A dictionary containing GitHub organizations to fetch repositories for. Values should be organisation names and organisation github names.</li>
+<li>csv_path: The path to the CSV file containing previously fetched data.</li>
+<li>max_retries: The maximum number of times to retry the API request if a rate limit is encountered. Defaults to 3.</li>
 </ul>
 </section>
-<section id="licence" class="level2">
-<h2 class="anchored" data-anchor-id="licence">Licence</h2>
-<p>MIT License, see <a href="https://github.com/nhs-pycom/opensource-health-statistics/blob/main/LICENSE"><code>LICENSE.md</code></a></p>
+<section id="returns" class="level2">
+<h2 class="anchored" data-anchor-id="returns">Returns</h2>
+<ul>
+<li>pd.DataFrame: A Pandas DataFrame containing information about repositories for all specified organizations.</li>
+</ul>
 </section>
-<section id="citation" class="level2">
-<h2 class="anchored" data-anchor-id="citation">Citation</h2>
-<p>NHS Python Community. <em>Open-source Healthcare Statistics</em> (2023). At &lt;<a href="https://github.com/nhs-pycom/opensource-health-statistics">https://github.com/nhs-pycom/opensource-health-statistics</a>&gt;.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>Manual{opensource<span class="sc">-</span>health<span class="sc">-</span>statistics2023,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  title  <span class="ot">=</span> {opensource<span class="sc">-</span>health<span class="sc">-</span>statistics<span class="sc">:</span> Statistics on open<span class="sc">-</span>source healthcare repositories},</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  author <span class="ot">=</span> {NHS Python Community},</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>nhs<span class="sc">-</span>pycom<span class="sc">/</span>opensource<span class="sc">-</span>health<span class="sc">-</span>statistics},</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  year <span class="ot">=</span> {<span class="dv">2023</span>},</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="example-usage" class="level2">
+<h2 class="anchored" data-anchor-id="example-usage">Example Usage</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> utilities.github_api_calls <span class="im">as</span> github_api_call</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> github_api_call.pull_raw_save_df({<span class="st">'Open AI'</span>: <span class="st">'openai'</span>, <span class="st">'Google'</span>: <span class="st">'google'</span>}, <span class="st">'github_repos.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -426,15 +484,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="./pages/github_api_call.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">GitHub API call</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
