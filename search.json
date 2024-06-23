@@ -1,60 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Open-source Healthcare Statistics",
-    "section": "",
-    "text": "Open-source is the practice of publishing the source code of a software project so that anyone can read, modify, re-use, and improve that software.\nAs set out in the NHS Digital Service Manual, public services are built with public money–so unless there’s a good reason not to (for security reasons for example), all code produced by the NHS should be made publicly available.\n\nOpen source means that the NHS can give our work back to the people who fund it, the public: allowing them to more easily join our staff, more quickly develop products to support us, and better understand and trust the work we do on their behalf. NHS Open-source Policy\n\nTo this end, the Department of Health & Social Care has recently made a commitment to make all new NHS code open source and published under appropriate licences such as MIT and OGLv3.",
-    "crumbs": [
-      "opensource-health-stats v0.2.0",
-      "Homepage"
-    ]
-  },
-  {
-    "objectID": "index.html#what-is-open-source",
-    "href": "index.html#what-is-open-source",
-    "title": "Open-source Healthcare Statistics",
-    "section": "",
-    "text": "Open-source is the practice of publishing the source code of a software project so that anyone can read, modify, re-use, and improve that software.\nAs set out in the NHS Digital Service Manual, public services are built with public money–so unless there’s a good reason not to (for security reasons for example), all code produced by the NHS should be made publicly available.\n\nOpen source means that the NHS can give our work back to the people who fund it, the public: allowing them to more easily join our staff, more quickly develop products to support us, and better understand and trust the work we do on their behalf. NHS Open-source Policy\n\nTo this end, the Department of Health & Social Care has recently made a commitment to make all new NHS code open source and published under appropriate licences such as MIT and OGLv3.",
-    "crumbs": [
-      "opensource-health-stats v0.2.0",
-      "Homepage"
-    ]
-  },
-  {
-    "objectID": "index.html#the-growth-of-open-source-in-healthcare",
-    "href": "index.html#the-growth-of-open-source-in-healthcare",
-    "title": "Open-source Healthcare Statistics",
-    "section": "The growth of open-source in healthcare",
-    "text": "The growth of open-source in healthcare\nThe ‘cambrian explosion’ visualisation captures the rise in open-source software in recent years. From the first open-source repository published by NHS England in 2014, to over 1,200 today. Python, R, and webdev tools (HTML, css, Ruby, PHP) are the most popular languages.\n\n\nShow code\nimport pandas as pd\nimport plotly.io as pio\nimport plotly.graph_objects as go\npio.renderers.default = 'notebook'\nfrom datetime import datetime\nfrom dateutil.relativedelta import relativedelta\n\n# Load data\ndf = pd.read_csv(\"../data/org_repos_agg.csv\")\n\n# Convert the \"Date\" column to a datetime dtype\ndf['Date'] = pd.to_datetime(df['Date'])\n\ndef plotly_chart(df: pd.DataFrame,\n                     group_col: str,\n                     values_col: str,\n                     date_col: str,\n                     plot_title: str,\n                     x_lab: str,\n                     y_lab: str) -&gt; None:\n    # Group the DataFrame by Organisation\n    grouped_df = df.groupby(group_col)\n    \n    data = []\n    for org, org_df in grouped_df:\n        \n        # Create a scatter plot of the data points for each organisation\n        scatter = go.Scatter(\n            x=org_df[date_col],\n            y=org_df[values_col],\n            name=org,\n            mode='lines',\n            line=dict(width=3, dash='solid'),\n            hovertemplate=f'%{{y:.0f}}'\n        )\n        data.append(scatter)\n    \n    # Set options\n    min_xaxis = min(df[date_col])\n    max_xaxis = max(df[date_col])\n    max_yaxis = max(df[values_col])\n    remove = ['zoom2d','pan2d', 'select2d', 'lasso2d', 'zoomIn2d',\n            'zoomOut2d', 'autoScale2d', 'resetScale2d', 'zoom',\n            'pan', 'select', 'zoomIn', 'zoomOut', 'autoScale',\n            'resetScale', 'toggleSpikelines', 'hoverClosestCartesian',\n            'hoverCompareCartesian', 'toImage']\n    \n    # Set layout\n    layout = go.Layout(title=plot_title,\n                       font=dict(size=12),\n                       xaxis=dict(title=x_lab,\n                                  # add more time to x-axis to show plot circles\n                                  range=[min_xaxis - relativedelta(days=5),\n                                         max_xaxis + relativedelta(days=5)]),\n                       yaxis=dict(title=y_lab,\n                                  # fix y0 at 0 and add 10% to y1\n                                  range=[0, max_yaxis + (max_yaxis * 0.1)]),\n                       showlegend=False,\n                       hovermode=\"x unified\")\n    \n    # Set configuration\n    config = {'displaylogo': False,\n              'displayModeBar': True,\n              'modeBarButtonsToRemove': remove}\n    \n    # Create the figure and show()\n    fig = go.Figure(data=data, layout=layout)\n    fig.update_layout(template='plotly_white')\n    fig.show(config=config)\n\nplotly_chart(df, \"Organisation\", \"Open Repositories\", \"Date\", \"The growth of open-source in healthcare\", \"Date\", \"Open Repositories\")",
-    "crumbs": [
-      "opensource-health-stats v0.2.0",
-      "Homepage"
-    ]
-  },
-  {
-    "objectID": "index.html#latest-open-source-statistics",
-    "href": "index.html#latest-open-source-statistics",
-    "title": "Open-source Healthcare Statistics",
-    "section": "Latest open-source statistics",
-    "text": "Latest open-source statistics\n\n\nShow code\nimport pandas as pd\nimport plotly.graph_objects as go\nimport datetime\nfrom dateutil.relativedelta import relativedelta\nfrom IPython.display import display, Markdown\nfrom tabulate import tabulate\n\n# Load data\ndf = pd.read_csv(\"../data/org_repos_agg.csv\")\n\n# Convert the \"Date\" column to a datetime dtype\ndf['Date'] = pd.to_datetime(df['Date'])\n\n# Filter the latest date for each organization\nlatest_dates = df.groupby('Organisation')['Date'].idxmax()\nlatest_df = df.loc[latest_dates]\n\n# Create a new column with hyperlinks for the \"Organisation\" column\nlatest_df['Organisation'] = latest_df.apply(lambda x: f\"[{x['Organisation']}]({x['URL']})\", axis=1)\n\n# Drop the \"Date\" column and sort by \"Open Repositories\"\nlatest_df = latest_df.drop(['Date', 'URL'], axis=1).sort_values('Open Repositories', ascending=False)\n\n# Calculate date data was rendered\ntoday = datetime.date.today()\nformatted_date = today.strftime(\"%d %B %Y\")\ndisplay(Markdown('Data updated as of: `%s`.' % formatted_date))\n\nMarkdown(tabulate(latest_df, headers='keys', tablefmt='pipe', showindex=False))\n\n\n\n\nTable 1: open-source statistics\n\n\n\nData updated as of: 16 June 2024.\n\n\n\n\n\n\n\n\n\n\n\nOrganisation\nOpen Repositories\nTop Language\nTop License\n\n\n\n\nnhsconnect\n195\nHTML\nApache License 2.0\n\n\nopensafely\n188\nPython\nMIT License\n\n\nNHSDigital\n182\nPython\nMIT License\n\n\nnhsuk\n173\nHTML\nMIT License\n\n\nebmdatalab\n131\nPython\nMIT License\n\n\nnhsbsa\n117\nHTML\nMIT License\n\n\nnhsx\n90\nPython\nMIT License\n\n\nHFAnalyticsLab\n59\nR\nMIT License\n\n\nukhsa-collaboration\n58\nPython\nMIT License\n\n\nnice-digital\n57\nJavaScript\nMIT License\n\n\nHealth-Education-England\n50\nJava\nMIT License\n\n\nopensafely-core\n50\nPython\nOther\n\n\nnhsengland\n41\nPython\nMIT License\n\n\nnhs-r-community\n38\nR\nCreative Commons Zero v1.0 Universal\n\n\nCDU-data-science-team\n33\nR\nOther\n\n\nUKHSA-Internal\n30\nPython\nMIT License\n\n\nBHFDSC\n30\nPython\nApache License 2.0\n\n\nnhs-bnssg-analytics\n25\nR\nGNU General Public License v3.0\n\n\nThe-Strategy-Unit\n24\nR\nOther\n\n\nNHSLeadership\n17\nHTML\nOther\n\n\n111Online\n13\nC#\nApache License 2.0\n\n\nnhs-pycom\n11\nPython\nMIT License\n\n\nCQCDigital\n5\nC#\nMIT License\n\n\nMHRA\n5\nJavaScript\nMIT License\n\n\nNottingham-and-Nottinghamshire-ICS\n4\nR\nMIT License\n\n\nNHS-Blood-and-Transplant\n1\nC#\nGNU General Public License v3.0",
-    "crumbs": [
-      "opensource-health-stats v0.2.0",
-      "Homepage"
-    ]
-  },
-  {
-    "objectID": "index.html#nhs-python-community-slack",
-    "href": "index.html#nhs-python-community-slack",
-    "title": "Open-source Healthcare Statistics",
-    "section": "NHS Python Community slack",
-    "text": "NHS Python Community slack\nIf you want to learn more about this project, please join the discussion at the NHS Python Community Slack group.",
-    "crumbs": [
-      "opensource-health-stats v0.2.0",
-      "Homepage"
-    ]
-  },
-  {
     "objectID": "pages/github_api_call.html",
     "href": "pages/github_api_call.html",
     "title": "GitHub API call",
@@ -124,6 +69,61 @@
       "opensource-health-stats v0.2.0",
       "Documentation",
       "GitHub API call"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Open-source Healthcare Statistics",
+    "section": "",
+    "text": "Open-source is the practice of publishing the source code of a software project so that anyone can read, modify, re-use, and improve that software.\nAs set out in the NHS Digital Service Manual, public services are built with public money–so unless there’s a good reason not to (for security reasons for example), all code produced by the NHS should be made publicly available.\n\nOpen source means that the NHS can give our work back to the people who fund it, the public: allowing them to more easily join our staff, more quickly develop products to support us, and better understand and trust the work we do on their behalf. NHS Open-source Policy\n\nTo this end, the Department of Health & Social Care has recently made a commitment to make all new NHS code open source and published under appropriate licences such as MIT and OGLv3.",
+    "crumbs": [
+      "opensource-health-stats v0.2.0",
+      "Homepage"
+    ]
+  },
+  {
+    "objectID": "index.html#what-is-open-source",
+    "href": "index.html#what-is-open-source",
+    "title": "Open-source Healthcare Statistics",
+    "section": "",
+    "text": "Open-source is the practice of publishing the source code of a software project so that anyone can read, modify, re-use, and improve that software.\nAs set out in the NHS Digital Service Manual, public services are built with public money–so unless there’s a good reason not to (for security reasons for example), all code produced by the NHS should be made publicly available.\n\nOpen source means that the NHS can give our work back to the people who fund it, the public: allowing them to more easily join our staff, more quickly develop products to support us, and better understand and trust the work we do on their behalf. NHS Open-source Policy\n\nTo this end, the Department of Health & Social Care has recently made a commitment to make all new NHS code open source and published under appropriate licences such as MIT and OGLv3.",
+    "crumbs": [
+      "opensource-health-stats v0.2.0",
+      "Homepage"
+    ]
+  },
+  {
+    "objectID": "index.html#the-growth-of-open-source-in-healthcare",
+    "href": "index.html#the-growth-of-open-source-in-healthcare",
+    "title": "Open-source Healthcare Statistics",
+    "section": "The growth of open-source in healthcare",
+    "text": "The growth of open-source in healthcare\nThe ‘cambrian explosion’ visualisation captures the rise in open-source software in recent years. From the first open-source repository published by NHS England in 2014, to over 1,200 today. Python, R, and webdev tools (HTML, css, Ruby, PHP) are the most popular languages.\n\n\nShow code\nimport pandas as pd\nimport plotly.io as pio\nimport plotly.graph_objects as go\npio.renderers.default = 'notebook'\nfrom datetime import datetime\nfrom dateutil.relativedelta import relativedelta\n\n# Load data\ndf = pd.read_csv(\"../data/org_repos_agg.csv\")\n\n# Convert the \"Date\" column to a datetime dtype\ndf['Date'] = pd.to_datetime(df['Date'])\n\ndef plotly_chart(df: pd.DataFrame,\n                     group_col: str,\n                     values_col: str,\n                     date_col: str,\n                     plot_title: str,\n                     x_lab: str,\n                     y_lab: str) -&gt; None:\n    # Group the DataFrame by Organisation\n    grouped_df = df.groupby(group_col)\n    \n    data = []\n    for org, org_df in grouped_df:\n        \n        # Create a scatter plot of the data points for each organisation\n        scatter = go.Scatter(\n            x=org_df[date_col],\n            y=org_df[values_col],\n            name=org,\n            mode='lines',\n            line=dict(width=3, dash='solid'),\n            hovertemplate=f'%{{y:.0f}}'\n        )\n        data.append(scatter)\n    \n    # Set options\n    min_xaxis = min(df[date_col])\n    max_xaxis = max(df[date_col])\n    max_yaxis = max(df[values_col])\n    remove = ['zoom2d','pan2d', 'select2d', 'lasso2d', 'zoomIn2d',\n            'zoomOut2d', 'autoScale2d', 'resetScale2d', 'zoom',\n            'pan', 'select', 'zoomIn', 'zoomOut', 'autoScale',\n            'resetScale', 'toggleSpikelines', 'hoverClosestCartesian',\n            'hoverCompareCartesian', 'toImage']\n    \n    # Set layout\n    layout = go.Layout(title=plot_title,\n                       font=dict(size=12),\n                       xaxis=dict(title=x_lab,\n                                  # add more time to x-axis to show plot circles\n                                  range=[min_xaxis - relativedelta(days=5),\n                                         max_xaxis + relativedelta(days=5)]),\n                       yaxis=dict(title=y_lab,\n                                  # fix y0 at 0 and add 10% to y1\n                                  range=[0, max_yaxis + (max_yaxis * 0.1)]),\n                       showlegend=False,\n                       hovermode=\"x unified\")\n    \n    # Set configuration\n    config = {'displaylogo': False,\n              'displayModeBar': True,\n              'modeBarButtonsToRemove': remove}\n    \n    # Create the figure and show()\n    fig = go.Figure(data=data, layout=layout)\n    fig.update_layout(template='plotly_white')\n    fig.show(config=config)\n\nplotly_chart(df, \"Organisation\", \"Open Repositories\", \"Date\", \"The growth of open-source in healthcare\", \"Date\", \"Open Repositories\")",
+    "crumbs": [
+      "opensource-health-stats v0.2.0",
+      "Homepage"
+    ]
+  },
+  {
+    "objectID": "index.html#latest-open-source-statistics",
+    "href": "index.html#latest-open-source-statistics",
+    "title": "Open-source Healthcare Statistics",
+    "section": "Latest open-source statistics",
+    "text": "Latest open-source statistics\n\n\nShow code\nimport pandas as pd\nimport plotly.graph_objects as go\nimport datetime\nfrom dateutil.relativedelta import relativedelta\nfrom IPython.display import display, Markdown\nfrom tabulate import tabulate\n\n# Load data\ndf = pd.read_csv(\"../data/org_repos_agg.csv\")\n\n# Convert the \"Date\" column to a datetime dtype\ndf['Date'] = pd.to_datetime(df['Date'])\n\n# Filter the latest date for each organization\nlatest_dates = df.groupby('Organisation')['Date'].idxmax()\nlatest_df = df.loc[latest_dates]\n\n# Create a new column with hyperlinks for the \"Organisation\" column\nlatest_df['Organisation'] = latest_df.apply(lambda x: f\"[{x['Organisation']}]({x['URL']})\", axis=1)\n\n# Drop the \"Date\" column and sort by \"Open Repositories\"\nlatest_df = latest_df.drop(['Date', 'URL'], axis=1).sort_values('Open Repositories', ascending=False)\n\n# Calculate date data was rendered\ntoday = datetime.date.today()\nformatted_date = today.strftime(\"%d %B %Y\")\ndisplay(Markdown('Data updated as of: `%s`.' % formatted_date))\n\nMarkdown(tabulate(latest_df, headers='keys', tablefmt='pipe', showindex=False))\n\n\n\n\nTable 1: open-source statistics\n\n\n\nData updated as of: 23 June 2024.\n\n\n\n\n\n\n\n\n\n\n\nOrganisation\nOpen Repositories\nTop Language\nTop License\n\n\n\n\nnhsconnect\n195\nHTML\nApache License 2.0\n\n\nopensafely\n188\nPython\nMIT License\n\n\nNHSDigital\n182\nPython\nMIT License\n\n\nnhsuk\n173\nHTML\nMIT License\n\n\nebmdatalab\n131\nPython\nMIT License\n\n\nnhsbsa\n117\nHTML\nMIT License\n\n\nnhsx\n90\nPython\nMIT License\n\n\nHFAnalyticsLab\n59\nR\nMIT License\n\n\nukhsa-collaboration\n58\nPython\nMIT License\n\n\nnice-digital\n57\nJavaScript\nMIT License\n\n\nHealth-Education-England\n50\nJava\nMIT License\n\n\nopensafely-core\n50\nPython\nOther\n\n\nnhsengland\n41\nPython\nMIT License\n\n\nnhs-r-community\n38\nR\nCreative Commons Zero v1.0 Universal\n\n\nCDU-data-science-team\n33\nR\nOther\n\n\nUKHSA-Internal\n30\nPython\nMIT License\n\n\nBHFDSC\n30\nPython\nApache License 2.0\n\n\nnhs-bnssg-analytics\n25\nR\nGNU General Public License v3.0\n\n\nThe-Strategy-Unit\n24\nR\nOther\n\n\nNHSLeadership\n17\nHTML\nOther\n\n\n111Online\n13\nC#\nApache License 2.0\n\n\nnhs-pycom\n11\nPython\nMIT License\n\n\nCQCDigital\n5\nC#\nMIT License\n\n\nMHRA\n5\nJavaScript\nMIT License\n\n\nNottingham-and-Nottinghamshire-ICS\n4\nR\nMIT License\n\n\nNHS-Blood-and-Transplant\n1\nC#\nGNU General Public License v3.0",
+    "crumbs": [
+      "opensource-health-stats v0.2.0",
+      "Homepage"
+    ]
+  },
+  {
+    "objectID": "index.html#nhs-python-community-slack",
+    "href": "index.html#nhs-python-community-slack",
+    "title": "Open-source Healthcare Statistics",
+    "section": "NHS Python Community slack",
+    "text": "NHS Python Community slack\nIf you want to learn more about this project, please join the discussion at the NHS Python Community Slack group.",
+    "crumbs": [
+      "opensource-health-stats v0.2.0",
+      "Homepage"
     ]
   },
   {
