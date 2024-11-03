@@ -24,15 +24,11 @@ jobs:
         with:
           python-version: 3.10.10
       - name: Install Python dependencies
-        uses: py-actions/py-dependency-install@v2
-        with:
-          path: "requirements.txt"
-      - name: List files for debugging
         run: |
-          ls -R
+          pip install -r requirements.txt
       - name: Execute Python script
         run: |
-          python opensource_health_statistics/run.py
+          python run.py
       - name: Commit files
         id: commit
         run: |
