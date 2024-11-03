@@ -2,42 +2,52 @@ name: run python script
 
 on:
   schedule:
-    - cron: "0 0 * * 0" #runs at 00:00 UTC every Sunday
+    - cron: "0 0 * * 0" # runs at 00:00 UTC every Sunday
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches:
+      - main
 
 jobs:
   manual_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout repo content
+      - name: Checkout repo content
         uses: actions/checkout@v3
-      - name: setup python
-        uses: actions/setup-python@v2
+      - name: Setup Python
+        uses: actions/setup-python@v4  # Update to latest version
         with:
-          python-version: 3.10.10 #install the python needed
+          python-version: 3.10.10
       - name: Install Python dependencies
-        uses: py-actions/py-dependency-install@v2
-        with:
-          path: "requirements.txt"
-      - name: execute py script # run the run.py to get the latest data
         run: |
-          python open_health_stats/run.py
-              dir
+          pip install -r requirements.txt
+      - name: Create necessary directories
+        run: |
+          mkdir -p data logs
+      - name: Execute Python script
+        run: |
+          python run.py
+      - name: Pull latest changes
+        run: |
+          git pull origin main
       - name: Commit files
         id: commit
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
           git add --all
-          if [-z "$(git status --porcelain)"]; then
-            echo "::set-output name=push::false"
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "push=false" >> $GITHUB_ENV  # Use Environment Files for setting output
           else
             git commit -m "Add changes" -a
-            echo "::set-output name=push::true"
+            echo "push=true" >> $GITHUB_ENV
           fi
         shell: bash
       - name: Push changes
-        if: steps.commit.outputs.push == 'true'
+        if: env.push == 'true'
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
