@@ -2,11 +2,11 @@ name: run python script
 
 on:
   schedule:
-    - cron: "0 0 * * 0" #runs at 00:00 UTC every Sunday
+    - cron: "0 0 * * 0" # runs at 00:00 UTC every Sunday
   push:
     branches:
-      - main        # Run on main branch
-      - dev         # Run on dev branch
+      - main
+      - dev
   pull_request:
     branches:
       - main
@@ -22,7 +22,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.10.10 #install the python needed
+          python-version: 3.10.10 # install the required Python version
       - name: Install Python dependencies
         uses: py-actions/py-dependency-install@v2
         with:
@@ -30,14 +30,13 @@ jobs:
       - name: execute py script # run the run.py to get the latest data
         run: |
           python opensource_health_statistics/run.py
-              dir
       - name: Commit files
         id: commit
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "github-actions"
           git add --all
-          if [-z "$(git status --porcelain)"]; then
+          if [ -z "$(git status --porcelain)" ]; then
             echo "::set-output name=push::false"
           else
             git commit -m "Add changes" -a
