@@ -3,6 +3,14 @@ name: run python script
 on:
   schedule:
     - cron: "0 0 * * 0" #runs at 00:00 UTC every Sunday
+  push:
+    branches:
+      - main        # Run on main branch
+      - dev         # Run on dev branch
+  pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
   manual_deploy:
