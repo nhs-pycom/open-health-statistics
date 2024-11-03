@@ -21,7 +21,7 @@ jobs:
           path: "requirements.txt"
       - name: execute py script # run the run.py to get the latest data
         run: |
-          python open_health_stats/run.py
+          python opensource_health_statistics/run.py
               dir
       - name: Commit files
         id: commit
